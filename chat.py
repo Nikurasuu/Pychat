@@ -33,7 +33,7 @@ while True:
         myresult = mycursor.fetchall()
         
         for row in myresult:
-            print(row[1] + ": " + row[2])
+            print("(" + str(row[0]) + ") " + row[1] + ": " + row[2])
 
         print("")
 
@@ -53,8 +53,32 @@ while True:
         print("")
 
     if mode == 3:
-        print("Nachrichten gelöscht!")
-        #Nachrichten aus der Datenbank löschen
+        #Nachrichten auslesen und anzeigen
+        print("Aktuelle Nachrichten: ")
+        print("")
+
+        mycursor = mydb.cursor()
+        mycursor.execute("SELECT * FROM chatroom1")
+
+        myresult = mycursor.fetchall()
+        
+        for row in myresult:
+            print("(" + str(row[0]) + ") " + row[1] + ": " + row[2])
+
+        print("")
+
+        nachricht_nummer = input("Welche Nachricht? ")
+        try:
+            mycursor = mydb.cursor()
+
+            sqlFormula = "DELETE FROM `chatroom1` WHERE `chatroom1`.`id` = %s"
+            packet = (nachricht_nummer)
+
+            mycursor.execute(sqlFormula, packet)
+
+            mydb.commit()
+        except:
+            print("Fehler beim Löschen!")
 
     if mode > 3:
         print("Bitte gültige Zahl eingeben!")

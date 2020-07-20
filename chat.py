@@ -30,6 +30,7 @@ def nachrichten_auslesen():
 
 def passwort_überprüfen():
     passwort = input("Passwort eingeben: ")
+    print(passwort)
 
     mycursor = mydb.cursor()
     sqlFormula = "SELECT password FROM users WHERE username = '%s'"

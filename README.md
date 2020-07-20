@@ -1,2 +1,2 @@
 # Pychat
- A Python Chatroom with MySql
+Ein einfacher Chatraum mit Python und MySQL.

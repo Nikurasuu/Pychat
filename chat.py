@@ -1,4 +1,5 @@
 import mysql.connector
+import time
 
 mysql_server = input("MySQL Server address: ")
 
@@ -34,6 +35,7 @@ while True:
         
         for row in myresult:
             print("(" + str(row[0]) + ") " + row[1] + ": " + row[2])
+            time.sleep(0.05)
 
         print("")
 

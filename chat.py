@@ -2,6 +2,14 @@ import mysql.connector
 import time
 
 def nachrichten_auslesen():
+
+        mydb = mysql.connector.connect(
+            host=mysql_server,
+            user="chatuser",
+            passwd="chatpasswort",
+            database="chat_datenbank"
+        )
+
     #Nachrichten auslesen und anzeigen
         print("Aktuelle Nachrichten: ")
         print("")
@@ -11,17 +19,18 @@ def nachrichten_auslesen():
 
         myresult = mycursor.fetchall()
         
-        print(myresult)
-
-        for row in myresult:
-            print("(" + str(row[0]) + ") " + row[1] + ": " + row[2])
-            time.sleep(0.05)
+        if myresult == []:
+            print("Keine Nachrichten uwu")
+        else:    
+            for row in myresult:
+                print("(" + str(row[0]) + ") " + row[1] + ": " + row[2])
+                time.sleep(0.05)
 
         print("")
 
 def passwort_überprüfen():
     passwort = input("Passwort eingeben: ")
-    
+
     mycursor = mydb.cursor()
     sqlFormula = "SELECT password FROM users WHERE username = '%s'"
     packet = (username)
@@ -46,7 +55,7 @@ print(mydb)
 
 username = input("Bitte Nutzernamen eingeben: ")
 print("Hallo " + username + "!")
-passwort_überprüfen()
+#passwort_überprüfen()
 
 while True:
     modeinput = input("1: Nachrichten lesen, 2: Nachricht schreiben, 3: Nachrichten löschen ")

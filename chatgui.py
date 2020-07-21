@@ -32,19 +32,19 @@ def OpenMainWindow():
     
     global root
     root = Tk()
-    root.geometry("1280x720")
+    #root.geometry("1280x720")
 
     title = (username + "@" + server)
     w = Label(root, text=title)
     w.pack(side=TOP)
 
-    B1 = Button(root, text='Nachrichten aktualisieren', width=25, bg="blue", command=ReadMessages)
+    B1 = Button(root, text='Nachrichten lesen', width=25, bg="blue", command=ReadMessages)
     B1.pack(side=LEFT)
 
     B2 = Button(root, text="Nachricht schreiben", width=25, bg="white", command=WriteMessage)
     B2.pack(side=LEFT)
 
-    B3 = Button(root, text='Stop', width=25, command=root.destroy)
+    B3 = Button(root, text='Exit', width=25, command=root.destroy)
     B3.pack(side=LEFT)
 
     root.mainloop()
@@ -66,11 +66,23 @@ def WriteMessage():
 
 def SendMessage():
     Message = MessageEntry.get()
-    print(Message)
+    mycursor = mydb.cursor()
+
+    sqlFormula = "INSERT INTO chatroom1 (username, text) VALUES (%s, %s)"
+    nachrichtpacket = (username, Message)
+
+    mycursor.execute(sqlFormula, nachrichtpacket)
+
+    mydb.commit()
+
+    print("Nachricht gesendet: " + Message)
     WriteWindow.destroy()
 
 def ReadMessages():
     print("Loading Messages..")
+
+    MessageWindow = Tk()
+
     mycursor = mydb.cursor()
     mycursor.execute("SELECT * FROM chatroom1")
 
@@ -82,8 +94,7 @@ def ReadMessages():
         for row in myresult:
             Message = row[1] + ": " + row[2]
             print(Message)
-            global L
-            L = Label(root, text = Message)
+            L = Label(MessageWindow, text = Message)
             L.pack()
 
 

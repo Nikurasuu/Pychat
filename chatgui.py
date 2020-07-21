@@ -6,6 +6,9 @@ import mysql.connector
 import sys
 
 def CheckLogin():
+    global username
+    username = E1.get()
+    global server
     server = E2.get()
     print("Connecting to " + server)
     try:
@@ -25,21 +28,20 @@ def OpenMainWindow():
 
     print(mydb)
 
-    username = E1.get()
-    server = E2.get()
     userlogin.destroy()
     
+    global root
     root = Tk()
     root.geometry("1280x720")
 
     title = (username + "@" + server)
     w = Label(root, text=title)
-    w.pack(side=LEFT)
+    w.pack(side=TOP)
 
-    B1 = Button(root, text='Nachrichten aktualisieren', width=25, command=ReadMessages)
+    B1 = Button(root, text='Nachrichten aktualisieren', width=25, bg="blue", command=ReadMessages)
     B1.pack(side=LEFT)
 
-    B2 = Button(root, text="Nachricht schreiben", width=25, command=WriteMessage)
+    B2 = Button(root, text="Nachricht schreiben", width=25, bg="white", command=WriteMessage)
     B2.pack(side=LEFT)
 
     B3 = Button(root, text='Stop', width=25, command=root.destroy)
@@ -69,6 +71,20 @@ def SendMessage():
 
 def ReadMessages():
     print("Loading Messages..")
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT * FROM chatroom1")
+
+    myresult = mycursor.fetchall()
+        
+    if myresult == []:
+        print("Keine Nachrichten uwu")
+    else:    
+        for row in myresult:
+            Message = row[1] + ": " + row[2]
+            print(Message)
+            global L
+            L = Label(root, text = Message)
+            L.pack()
 
 
 userlogin = Tk()
@@ -85,7 +101,7 @@ L2.pack(side = LEFT)
 E2 = Entry(userlogin, bd = 1)
 E2.pack(side = LEFT)
 
-B1 = Button(userlogin, text='Login', width=10, command = CheckLogin)
+B1 = Button(userlogin, text='Login', width=10, bg="white", command = CheckLogin)
 B1.pack(side = RIGHT)
 
 userlogin.mainloop()

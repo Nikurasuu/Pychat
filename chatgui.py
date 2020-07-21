@@ -83,6 +83,14 @@ def ReadMessages():
 
     MessageWindow = Tk()
 
+    global mydb
+    mydb = mysql.connector.connect(
+        host=server,
+        user="chatuser",
+        passwd="chatpasswort",
+        database="chat_datenbank"
+    )
+
     mycursor = mydb.cursor()
     mycursor.execute("SELECT * FROM chatroom1")
 
@@ -90,6 +98,8 @@ def ReadMessages():
         
     if myresult == []:
         print("Keine Nachrichten uwu")
+        L = Label(MessageWindow, text = "Keine Nachrichten uwu")
+        L.pack()
     else:    
         for row in myresult:
             Message = row[1] + ": " + row[2]
